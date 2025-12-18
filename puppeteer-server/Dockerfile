@@ -13,3 +13,4 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 EXPOSE 3000
 
 CMD ["node", "server.js"]
+
