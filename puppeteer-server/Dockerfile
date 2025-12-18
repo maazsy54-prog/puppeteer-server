@@ -3,7 +3,7 @@ FROM ghcr.io/puppeteer/puppeteer:21.6.1
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install --only=production
 
 COPY . .
 
@@ -13,4 +13,5 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 EXPOSE 3000
 
 CMD ["node", "server.js"]
+
 
