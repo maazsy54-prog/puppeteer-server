@@ -1,29 +1,30 @@
 FROM ghcr.io/puppeteer/puppeteer:24.15.0
 
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to install dependencies
+# Copy package files as root
+USER root
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm install --only=production --omit=dev
+# Fix ownership so pptruser can write
+RUN chown -R pptruser:pptruser /app
 
-# Copy the rest of the project files
-COPY . .
+# Switch back to non-root user
+USER pptruser
 
-# Install missing dependencies for Chromium
-RUN apt-get update && apt-get install -y wget gnupg
-RUN apt-get install -y libxss1 libappindicator3-1 libindicator7
+# Install production dependencies
+RUN npm install --omit=dev
 
-# Skip Chromium download and set executable path
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+# Copy the rest of the app
+COPY --chown=pptruser:pptruser . .
 
-# Expose port 3000
+# Expose port
 EXPOSE 3000
 
-# Start the application
+# Start server
 CMD ["node", "server.js"]
+
 
 
 
