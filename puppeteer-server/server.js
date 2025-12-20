@@ -9,11 +9,6 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const API_SECRET = process.env.API_SECRET || 'change-this-secret';
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('Welcome to the Visa Slot Checker API!');
-});
-
 // Middleware to check API secret
 const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -204,3 +199,5 @@ function parseSlots(data) {
 app.listen(PORT, () => {
   console.log(`Visa slot checker server running on port ${PORT}`);
 });
+
+
